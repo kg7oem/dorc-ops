@@ -10,8 +10,7 @@ use Net::DBus;
 use Plack::Builder;
 use Template;
 
-use constant BRIDGE_NAMES => qw(dorc-xmpp);
-use constant UNIT_NAMES => { map { $_ => "matterbridge\@$_.service" } BRIDGE_NAMES };
+use constant MATTERBRIDGE_CONF_DIR => "/etc/local/dorc/matterbridge/";
 
 use constant ROOT_PATH => "/dorc/chatbridgecontroller";
 use constant COMMAND_PATH => ROOT_PATH . "/command";
@@ -38,10 +37,10 @@ get(ROOT_PATH, sub {
 post(COMMAND_PATH, sub {
     my $command = lc(body_parameters->{command});
     my $bridge_name = body_parameters->{bridge};
-    my $unit_name = UNIT_NAMES->{$bridge_name};
+    my $unit_name = get_unit_name($bridge_name);
     my $body;
 
-    if (! grep({ $_ eq $bridge_name} BRIDGE_NAMES)) {
+    if (! grep({ $_ eq $bridge_name} get_bridge_names())) {
         die "invalid unit specified: $unit_name";
     }
 
@@ -62,7 +61,7 @@ post(COMMAND_PATH, sub {
 
 sub view_log {
     my ($bridge_name) = @_;
-    my $unit_name = UNIT_NAMES->{$bridge_name};
+    my $unit_name = get_unit_name($bridge_name);
     my @lines = split("\n", `journalctl --user -u "$unit_name" | tail -n 100`);
 
     my $log = join("\n", reverse(@lines));
@@ -113,8 +112,8 @@ sub get_unit {
 sub get_bridge_summary {
     my @ret;
 
-    foreach my $bridge_name (BRIDGE_NAMES) {
-        my $unit_name = UNIT_NAMES->{$bridge_name};
+    foreach my $bridge_name (get_bridge_names()) {
+        my $unit_name = get_unit_name($bridge_name);
         my $result = { name => $bridge_name };
 
         eval {
@@ -138,6 +137,19 @@ sub get_bridge_summary {
     }
 
     return \@ret;
+}
+
+sub get_bridge_names {
+    opendir(my $dh, MATTERBRIDGE_CONF_DIR);
+    my @files = grep { m/\.toml$/ } readdir($dh);
+
+    return map { s/\.toml$//; $_; } @files;
+}
+
+sub get_unit_name {
+    my ($bridge_name) = @_;
+    state $unit_names = { map { $_ => "matterbridge\@$_.service" } get_bridge_names() };
+    return $unit_names->{$bridge_name};
 }
 
 builder(sub {
