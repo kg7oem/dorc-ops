@@ -173,15 +173,15 @@ __[root]__
 [% END %]
 
 __[log]__
-<a href="[% ROOT_PATH %]">Back to controller</a>
+<p><a href="[% ROOT_PATH %]">Back to controller</a></p>
 
 [% IF content == "" %]
-<p>No log info for [% unit %] at [% date_time %]
+<p>No log info for [% unit %] at [% date_time %]</p>
 [% ELSE %]
 <p>Log for [% unit %] at [% date_time %]
 <p><pre>[% content %]</pre></p>
 [% END %]
 
-<a href="[% ROOT_PATH %]">Back to controller</a>
+<p><a href="[% ROOT_PATH %]">Back to controller</a></p>
 
 __END__
