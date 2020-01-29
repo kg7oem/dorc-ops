@@ -1,0 +1,26 @@
+---
+abstract: 'D.O.R.C. Ops Libraries and Tools'
+author:
+  - unknown
+build_requires: {}
+dynamic_config: 0
+generated_by: 'Module::Build version 0.4224, CPAN::Meta::Converter version 2.150010'
+license: unknown
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: '1.4'
+name: DORC-Ops
+provides:
+  DORC::Ops:
+    file: lib/DORC/Ops.pm
+    version: v0.0.1
+  DORC::Ops::PSGI::ChatBridgeController:
+    file: lib/DORC/Ops/PSGI/ChatBridgeController.pm
+requires:
+  Dancer2: '0'
+  Data::Section: '0'
+  Net::DBus: '0'
+  Plack: '0'
+  Template: '0'
+version: v0.0.1
+x_serialization_backend: 'CPAN::Meta::YAML version 0.018'

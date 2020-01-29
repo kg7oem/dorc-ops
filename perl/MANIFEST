@@ -1,0 +1,4 @@
+Build.PL
+lib/DORC/Ops.pm
+lib/DORC/Ops/PSGI/ChatBridgeController.pm
+MANIFEST			This list of files
