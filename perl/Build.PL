@@ -12,6 +12,7 @@ my $build = Module::Build->new(
         "Data::Section" => 0,
         "Net::DBus" => 0,
         "Plack" => 0,
+        "Plack::Middleware::Access" => 0,
         "Template" => 0,
     },
 );
