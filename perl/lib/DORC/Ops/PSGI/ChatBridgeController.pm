@@ -171,18 +171,21 @@ __[_document]__
 </html>
 
 __[root]__
-<p>Chat bridges:</p>
+<h1>Chat bridges</h1>
+
+<p><ul>
 [% FOREACH bridge IN bridge_summary %]
-<p>
     <form action="[% COMMAND_PATH %]" method="post">
-        [% bridge.name %] [% bridge.state %]
-        <input type="hidden" name="bridge" value="[% bridge.name %]">
-        <input type="submit" name="command" value="View Log">
-        <input type="submit" name="command" value="Stop">
-        <input type="submit" name="command" value="Start">
+        <li>
+            [% bridge.name %] [% bridge.state %]
+            <input type="hidden" name="bridge" value="[% bridge.name %]">
+            <input type="submit" name="command" value="View Log">
+            <input type="submit" name="command" value="Stop">
+            <input type="submit" name="command" value="Start">
+        </li>
     </form>
-</p>
 [% END %]
+</ul></p>
 
 __[log]__
 <p><a href="[% ROOT_PATH %]">Back to controller</a></p>
