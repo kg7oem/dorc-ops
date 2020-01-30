@@ -148,8 +148,13 @@ sub get_bridge_names {
 
 sub get_unit_name {
     my ($bridge_name) = @_;
-    state $unit_names = { map { $_ => "matterbridge\@$_.service" } get_bridge_names() };
-    return $unit_names->{$bridge_name};
+    state %unit_names;
+
+    unless (exists $unit_names{$bridge_name}) {
+        $unit_names{$bridge_name} = "matterbridge\@$bridge_name.service";
+    }
+
+    return $unit_names{$bridge_name};
 }
 
 builder(sub {
